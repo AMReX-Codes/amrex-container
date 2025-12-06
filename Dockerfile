@@ -38,7 +38,6 @@ RUN useradd -m -s /bin/bash amrexuser \
 
 USER amrexuser
 WORKDIR /home/amrexuser
-ENV AMReX_ROOT=/home/amrexuser/installdir
 
 RUN if [ "$TARGETARCH" = "amd64" ]; then \
       echo "alias pvpython='/opt/ParaView-6.0.1-MPI-Linux-Python3.12-x86_64/bin/pvpython'" >> /home/amrexuser/.bashrc && \
@@ -54,6 +53,8 @@ RUN git clone --branch 25.12 --depth 1 https://github.com/AMReX-Codes/amrex.git 
  && cmake --build build -j `nproc` \
  && cmake --build build --target install
 
+ARG CACHE_BUST=unknown
 RUN git clone https://github.com/WeiqunZhang/amrex-101.git
 
+ENV AMReX_ROOT=/home/amrexuser/amrex/installdir
 CMD ["/bin/bash"]
