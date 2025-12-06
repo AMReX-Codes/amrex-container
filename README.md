@@ -11,7 +11,8 @@ $ docker run -it weiqunzhang/amrex:latest
 This will put you in `/home/amrexuser`. Inside this directory, you will find
 two subdirectories,
   * `amrex`: the AMReX source code (with a CMake build directory inside),
-  * `amrex-101`: an example code.
+  * `amrex-101`: examples of using AMReX and pyAMReX,
+  * `pyamrex`: the pyAMReX source code.
 
 A precompiled AMReX library is located at `~/amrex/installdir`. To run some
 tests using CTest,
@@ -21,7 +22,7 @@ $ ctest
 ```
 
 If you are a GNU Make user, you can do the following to compile and run the
-example code amrex-101.
+example code amr-101.
 ```
 $ cd ~/amrex-101/Amr/Exec
 $ make -j
@@ -50,4 +51,11 @@ while the container is still running.
 ```
 $ docker cp $(docker ps -q | head -n1)://home/amrexuser/amrex-101/Amr/Exec/amr101_3D.avi .
 $ docker cp $(docker ps -q | head -n1)://home/amrexuser/amrex-101/Amr/Exec/amr101_3D.gif .
+```
+
+This container also ships an installation of pyAMReX. An example of a heat
+equation solver using pyAMReX is included.
+```
+$ cd ~/amrex-101/pyheat
+$ python3 main.py
 ```

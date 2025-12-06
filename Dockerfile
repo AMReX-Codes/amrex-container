@@ -12,6 +12,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     openmpi-bin     \
     git             \
     python3         \
+    python3-dev     \
+    python3-pip     \
     cmake           \
     pkg-config      \
     wget            \
@@ -22,7 +24,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libosmesa6      \
     libosmesa6-dev  \
     ffmpeg          \
- && rm -rf /var/lib/apt/lists/* \
  && update-ca-certificates 
 
 RUN if [ "$TARGETARCH" = "amd64" ]; then \
@@ -52,6 +53,20 @@ RUN git clone --branch 25.12 --depth 1 https://github.com/AMReX-Codes/amrex.git 
                -DAMReX_SPACEDIM="3" \
  && cmake --build build -j `nproc` \
  && cmake --build build --target install
+
+RUN mkdir -p ~/.config/pip/ && \
+    cat << 'EOF' > ~/.config/pip/pip.conf
+[global]
+break-system-packages = true
+EOF
+
+RUN git clone --branch 25.12 --depth 1 https://github.com/AMReX-Codes/pyamrex.git \
+ && cd pyamrex \
+ && cmake -S . -B build \
+               -DpyAMReX_amrex_src=${HOME}/amrex \
+               -DAMReX_EB=OFF \
+ && cmake --build build -j `nproc` --target pip_install \
+ && rm -rf build _tmppythonbuild
 
 ARG CACHE_BUST=unknown
 RUN git clone https://github.com/WeiqunZhang/amrex-101.git
