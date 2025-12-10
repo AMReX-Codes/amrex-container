@@ -1,11 +1,11 @@
 To pull the latest amrex container, run
 ```
-$ docker pull weiqunzhang/amrex:latest
+$ docker pull ghcr.io/amrex-codes/amrex:latest
 ```
 
 Start the container with:
 ```
-$ docker run -it weiqunzhang/amrex:latest
+$ docker run -it ghcr.io/amrex-codes/amrex:latest
 ```
 
 This will put you in `/home/amrexuser`. Inside this directory, you will find
